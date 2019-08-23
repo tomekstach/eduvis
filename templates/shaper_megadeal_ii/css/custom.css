@@ -1,0 +1,103 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+
+
+/*
+    Created on : 2019-01-16, 15:12:51
+    Author     : AstoSoft
+*/
+
+.sppb-col-md-3>.sppb-column {
+    z-index: 4;
+}
+
+img.sp-default-logo,
+img.sp-retina-logo {
+    height: 80px;
+    width: auto;
+}
+
+.item.sp-vmproduct-wrapper {
+    padding: 0 15px;
+}
+
+.product.sp-vmproduct-wrapper:nth-child(3) {
+    border-right: 1px solid #e9eaed !important;
+}
+
+.product.sp-vmproduct-wrapper:nth-child(4) {
+    border-right: none !important;
+}
+
+div[class*="-view"] .row {
+    display: flex;
+}
+
+a.notify i {
+    display: none;
+}
+
+.sp-vmproduct-image a.notify i {
+    display: inline-block;
+}
+
+.sp-vmproduct-image a.notify span {
+    display: none;
+}
+
+.modal-dialog {
+    z-index: 10080;
+}
+
+.owl-stage {
+    display: flex;
+}
+
+
+/* PAGINATION */
+
+.pagination-wraper ul.pagination::after {
+    border-radius: none;
+    background-color: transparent;
+}
+
+.vm-page-counter {
+    display: none;
+}
+
+.pagination-wraper .pagination>li.disabled.hidden-xs>a {
+    background-color: #f54f0c;
+    color: #fff;
+}
+
+.orderby-displaynumber {
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderby-displaynumber .vm-order-list {
+    float: none;
+}
+
+.orderby-displaynumber .vm-pagination {
+    float: none;
+    margin-top: 35px;
+}
+
+.orderby-displaynumber .display-number {
+    float: none;
+    padding-top: 0;
+}
+
+.vm-pagination.vm-pagination-bottom {
+    float: none;
+    display: flex;
+    justify-content: center;
+}
+
+.vm-pagination.vm-pagination-bottom .pagination-wraper {
+    margin-top: 35px;
+}
