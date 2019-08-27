@@ -101,3 +101,13 @@ a.notify i {
 .vm-pagination.vm-pagination-bottom .pagination-wraper {
     margin-top: 35px;
 }
+
+@media (max-width: 991px) {
+    #sp-top-bar #sp-top1 {
+        display: none;
+    }
+    img.sp-default-logo,
+    img.sp-retina-logo {
+        height: 60px;
+    }
+}
