@@ -104,7 +104,7 @@ if ($this->doctype == 'invoice') {
 			<?php if(!empty($this->orderDetails['details']['has_ST'])){
 				echo "<table border='0'>";
 				foreach ($this->shipmentfields['fields'] as $field) {
-					if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note'])) {
+					if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note'])  and $field['title'] != 'Nazwa adresu') {
 						echo '<tr><td class="key">' . $field['title'] . '</td>'
 						. '<td>' . $field['value'] . '</td></tr>';
 					}
