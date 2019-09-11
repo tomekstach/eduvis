@@ -92,7 +92,7 @@ if ($this->doctype == 'invoice') {
 	    <?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></strong> <br/>
 	    <table border="0"><?php
 	    foreach ($this->userfields['fields'] as $field) {
-		if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note'])) {
+		if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note','address_type_name'])) {
 			echo '<tr><td class="key">' . $field['title'] . '</td>'
 			. '<td>' . $field['value'] . '</td></tr>';
 		}
@@ -104,7 +104,7 @@ if ($this->doctype == 'invoice') {
 			<?php if(!empty($this->orderDetails['details']['has_ST'])){
 				echo "<table border='0'>";
 				foreach ($this->shipmentfields['fields'] as $field) {
-					if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note'])  and $field['title'] != 'Nazwa adresu') {
+					if (!empty($field['value']) and !in_array($field['name'], ['email','phone_1','first_name','last_name','customer_note','address_type_name'])) {
 						echo '<tr><td class="key">' . $field['title'] . '</td>'
 						. '<td>' . $field['value'] . '</td></tr>';
 					}

@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php
 
 	    foreach ($this->userfields['fields'] as $field) {
-		if (!empty($field['value'])) {
+		if (!empty($field['value']) and $field['name'] != 'address_type_name') {
 			?><!-- span class="titles"><?php echo $field['title'] ?></span -->
 	    	    <span class="values vm2<?php echo '-' . $field['name'] ?>" ><?php echo $field['value'] ?></span>
 			<?php if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') { ?>
@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php
 	    foreach ($this->shipmentfields['fields'] as $field) {
 
-		if (!empty($field['value']) and $field['title'] != 'Nazwa adresu') {
+		if (!empty($field['value']) and $field['name'] != 'address_type_name') {
 			    ?><!-- span class="titles"><?php echo $field['title'] ?></span -->
 			    <span class="values vm2<?php echo '-' . $field['name'] ?>" ><?php echo $field['value'] ?></span>
 			    <?php if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') { ?>
