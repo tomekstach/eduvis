@@ -72,7 +72,6 @@ if($this->userDetails->virtuemart_user_id!=0) {
 
  } else {
 	echo $this->loadTemplate ( 'shopper' );
-	echo 'test!!!';
 	echo $this->captcha;
 
  }
