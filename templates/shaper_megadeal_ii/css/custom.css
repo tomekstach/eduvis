@@ -14,6 +14,10 @@ and open the template in the editor.
     z-index: 4;
 }
 
+.productdetails-view-section .vm-product-details-container .spacer-buy-area .product-price {
+    display: block;
+}
+
 img.sp-default-logo,
 img.sp-retina-logo {
     height: 80px;
