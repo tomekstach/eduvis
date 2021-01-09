@@ -11,107 +11,111 @@ and open the template in the editor.
 */
 
 .sppb-col-md-3>.sppb-column {
-    z-index: 4;
+  z-index: 4;
 }
 
 .productdetails-view-section .vm-product-details-container .spacer-buy-area .product-price {
-    display: block;
+  display: block;
 }
 
 img.sp-default-logo,
 img.sp-retina-logo {
-    height: 80px;
-    width: auto;
+  height: 80px;
+  width: auto;
 }
 
 .item.sp-vmproduct-wrapper {
-    padding: 0 15px;
+  padding: 0 15px;
 }
 
 .product.sp-vmproduct-wrapper:nth-child(3) {
-    border-right: 1px solid #e9eaed !important;
+  border-right: 1px solid #e9eaed !important;
 }
 
 .product.sp-vmproduct-wrapper:nth-child(4) {
-    border-right: none !important;
+  border-right: none !important;
 }
 
 div[class*="-view"] .row {
-    display: flex;
+  display: flex;
 }
 
 a.notify i {
-    display: none;
+  display: none;
 }
 
 .sp-vmproduct-image a.notify i {
-    display: inline-block;
+  display: inline-block;
 }
 
 .sp-vmproduct-image a.notify span {
-    display: none;
+  display: none;
 }
 
 .modal-dialog {
-    z-index: 10080;
+  z-index: 10080;
 }
 
 .owl-stage {
-    display: flex;
+  display: flex;
 }
 
 
 /* PAGINATION */
 
 .pagination-wraper ul.pagination::after {
-    border-radius: none;
-    background-color: transparent;
+  border-radius: none;
+  background-color: transparent;
 }
 
 .vm-page-counter {
-    display: none;
+  display: none;
 }
 
 .pagination-wraper .pagination>li.disabled.hidden-xs>a {
-    background-color: #f54f0c;
-    color: #fff;
+  background-color: #f54f0c;
+  color: #fff;
 }
 
 .orderby-displaynumber {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .orderby-displaynumber .vm-order-list {
-    float: none;
+  float: none;
 }
 
 .orderby-displaynumber .vm-pagination {
-    float: none;
-    margin-top: 35px;
+  float: none;
+  margin-top: 35px;
 }
 
 .orderby-displaynumber .display-number {
-    float: none;
-    padding-top: 0;
+  float: none;
+  padding-top: 0;
 }
 
 .vm-pagination.vm-pagination-bottom {
-    float: none;
-    display: flex;
-    justify-content: center;
+  float: none;
+  display: flex;
+  justify-content: center;
 }
 
 .vm-pagination.vm-pagination-bottom .pagination-wraper {
-    margin-top: 35px;
+  margin-top: 35px;
+}
+
+#com-form-login #com-form-login-remember input[type="checkbox"] {
+  height: auto;
 }
 
 @media (max-width: 991px) {
-    #sp-top-bar #sp-top1 {
-        display: none;
-    }
-    img.sp-default-logo,
-    img.sp-retina-logo {
-        height: 60px;
-    }
+  #sp-top-bar #sp-top1 {
+    display: none;
+  }
+  img.sp-default-logo,
+  img.sp-retina-logo {
+    height: 60px;
+  }
 }
