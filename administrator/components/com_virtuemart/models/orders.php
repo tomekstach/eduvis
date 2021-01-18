@@ -17,7 +17,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: orders.php 10330 2020-06-16 14:25:09Z Milbo $
+ * @version $Id: orders.php 10363 2020-11-02 17:58:28Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -299,7 +299,7 @@ class VirtueMartModelOrders extends VmModel
 
       $ids = array();
 
-      $product = $pModel->getProduct($item->virtuemart_product_id, true, true, false);
+      $product = $pModel->getProduct($item->virtuemart_product_id, true, false, false);
       if ($product) {
         $pvar = get_object_vars($product);
 
@@ -368,10 +368,12 @@ class VirtueMartModelOrders extends VmModel
             st.city AS st_city,
             st.zip AS st_zip,
             u.customer_note AS customer_note';
-    $from = $this->getOrdersListQuery();
+
 
     $where = array();
 
+    $byOrderItem = false;
+    $groupBy = '';
     if (empty($uid)) {
       if (VmConfig::get('multix', 'none') != 'none') {
         if (vmAccess::manager('managevendors')) {
@@ -382,7 +384,14 @@ class VirtueMartModelOrders extends VmModel
           $virtuemart_vendor_id = false;
         }
         if ($virtuemart_vendor_id) {
-          $where[] = ' o.virtuemart_vendor_id = ' . (int)$virtuemart_vendor_id . ' ';
+          if (VmConfig::get('allowVendorsSeeMainOrder', true) and empty(VmConfig::get('multixcart', 0))) {
+            $byOrderItem = true;
+            $tbpre = 'oi';
+            $groupBy = 'GROUP BY virtuemart_order_id';
+          } else {
+            $tbpre = 'o';
+          }
+          $where[] = ' ' . $tbpre . '.virtuemart_vendor_id = ' . (int)$virtuemart_vendor_id . ' ';
         }
       }
       if (!vmAccess::manager('orders')) {
@@ -396,6 +405,8 @@ class VirtueMartModelOrders extends VmModel
     } else {
       $where[] = ' u.virtuemart_user_id = ' . (int)$uid . ' ';
     }
+
+    $from = $this->getOrdersListQuery($byOrderItem);
 
     if ($this->search) {
       $db = JFactory::getDBO();
@@ -441,7 +452,7 @@ class VirtueMartModelOrders extends VmModel
       $ordering = ' order by o.modified_on DESC';
     }
 
-    $this->_data = $this->exeSortSearchListQuery(0, $select, $from, $whereString, '', $ordering);
+    $this->_data = $this->exeSortSearchListQuery(0, $select, $from, $whereString, $groupBy, $ordering);
 
     if ($this->_data) {
       foreach ($this->_data as $k => $d) {
@@ -455,17 +466,22 @@ class VirtueMartModelOrders extends VmModel
   /**
    * List of tables to include for the product query
    */
-  private function getOrdersListQuery()
+  private function getOrdersListQuery($byOrderItem = false)
   {
-    return ' FROM #__virtuemart_orders as o
+    $q = ' FROM #__virtuemart_orders as o
 				LEFT JOIN #__virtuemart_order_userinfos as u
 				ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
 				LEFT JOIN #__virtuemart_order_userinfos as st
-				ON st.virtuemart_order_id = o.virtuemart_order_id AND st.address_type="ST"
-				LEFT JOIN #__virtuemart_paymentmethods_' . VmConfig::$vmlang . ' as pm
+				ON st.virtuemart_order_id = o.virtuemart_order_id AND st.address_type="ST" ';
+    if ($byOrderItem) {
+      $q .= ' LEFT JOIN #__virtuemart_order_items as oi
+				ON o.virtuemart_order_id = oi.virtuemart_order_id ';
+    }
+    $q .= '	LEFT JOIN #__virtuemart_paymentmethods_' . VmConfig::$vmlang . ' as pm
 				ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id
 				LEFT JOIN #__virtuemart_shipmentmethods_' . VmConfig::$vmlang . ' as sm
 				ON o.virtuemart_shipmentmethod_id = sm.virtuemart_shipmentmethod_id';
+    return $q;
   }
 
 
@@ -621,9 +637,9 @@ class VirtueMartModelOrders extends VmModel
       }
     }
 
-    if (empty($data['virtuemart_vendor_id']) and !empty($table->virtuemart_vendor_id)) {
-      $data['virtuemart_vendor_id'] = $table->virtuemart_vendor_id;
-    }
+    //if(empty($data['virtuemart_vendor_id']) and !empty($table->virtuemart_vendor_id)){
+    $data['virtuemart_vendor_id'] = $table->virtuemart_vendor_id;
+    //}
 
     $table->bindChecknStore($data);
 
@@ -1375,7 +1391,7 @@ class VirtueMartModelOrders extends VmModel
 
       //prevents sending of email
       $inputOrder['customer_notified'] = 0;
-      //vmdebug('Lets store something here',$data,$inputOrder['order_status']);
+      // invoice_locked should depend ideally on the existence of the invoice, but it would just be an extra query later, we do a new invoice anyway.
       if (VirtueMartModelInvoice::needInvoiceByOrderstatus($data->order_status) or VirtueMartModelInvoice::needInvoiceByOrderstatus($data->order_status, 'inv_osr', array('R'))) {
         $data->invoice_locked = 1;
         //vmdebug('SET LOCK');
@@ -1541,6 +1557,7 @@ class VirtueMartModelOrders extends VmModel
 
     $usr = JFactory::getUser();
     //$prices = $cart->getCartPrices();
+
     if (($orderID = $this->_createOrder($cart, $usr)) == 0) {
       vmError('Couldn\'t create order', 'Couldn\'t create order');
       return false;
@@ -2015,14 +2032,18 @@ class VirtueMartModelOrders extends VmModel
       $_orderItems->product_priceWithoutTax = $product->allPrices[$product->selectedPrice]['priceWithoutTax'];
       $_orderItems->product_discountedPriceWithoutTax = $product->allPrices[$product->selectedPrice]['discountedPriceWithoutTax'];
       $_orderItems->order_status = 'P';
+
       if (!$_orderItems->check()) {
         return false;
       }
+      //The check may set here a wrong vendorId, we replace it again with the right one.
+      $_orderItems->virtuemart_vendor_id = $product->virtuemart_vendor_id;
 
       // Save the record to the database
       if (!$_orderItems->store()) {
         return false;
       }
+
       $product->virtuemart_order_item_id = $_orderItems->virtuemart_order_item_id;
 
       $this->handleStockAfterStatusChangedPerProduct($_orderItems->order_status, 'N', $_orderItems, $_orderItems->product_quantity);
