@@ -935,17 +935,20 @@ class VirtueMartModelOrders extends VmModel
 						} else {*/
           //$calc_amount = $calc->calc_amount;
           //}*/
+          // AstoSoft - Start
           if (!isset($calc->product_quantity)) $calc->product_quantity = 1;
           if ($calc->calc_kind == 'DBTaxRulesBill' || $calc->calc_kind == 'DATaxRulesBill') {
-            $calc_rules_discount_amount += $calc->calc_amount;
+            $calc_rules_discount_amount += $calc->calc_result;
           } else if ($calc->calc_kind == 'taxRulesBill' or $calc->calc_kind == 'Tax') {
-            $calc_rules_tax_amount += $calc->calc_amount;
+            $calc_rules_tax_amount += $calc->calc_result;
           } else if ($calc->calc_kind == 'Tax') {
-            $calc_rules_tax_amount += $calc->calc_amount * $calc->product_quantity;
+            $calc_rules_tax_amount += $calc->calc_result * $calc->product_quantity;
           } else if ($calc->calc_kind == 'VatTax') {
-            $calc_rules_vattax_amount += $calc->calc_amount /* $calc->product_quantity*/;
+            $calc_rules_vattax_amount += $calc->calc_result /* $calc->product_quantity*/;
           }
+          // AstoSoft - End
         }
+
         //}
       }
 
