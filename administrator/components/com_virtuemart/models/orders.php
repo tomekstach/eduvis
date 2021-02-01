@@ -882,6 +882,11 @@ class VirtueMartModelOrders extends VmModel
       //cartRules, these are just plain values!
       $bill_rules = vRequest::getVar('calc_rules', array());
       $calculate_billTaxAmount = vRequest::getInt('calculate_billTaxAmount', true);
+      // AstoSoft - Start
+      $calculate_discountAmount = vRequest::getFloat('coupon_discount');
+      $calculate_orderShipmentTax = vRequest::getFloat('order_shipment_tax');
+      $calculate_orderPaymentTax = vRequest::getFloat('order_payment_tax');
+      // AstoSoft - End
       //$calc_rules_amount = 0;
       $calc_rules_discount_amount = 0.0;
       $calc_rules_tax_amount = 0.0;
@@ -927,15 +932,15 @@ class VirtueMartModelOrders extends VmModel
         //foreach($calcs as $virtuemart_calc_id => $calc_rule) {
         vmdebug('updateBill $order_rules ', $order_rules);
         foreach ($order_rules as $calc) {
-
-          /*if($calculate_billTaxAmount and isset($calc->subTotal)){
-							//if(!isset($vattax[$virtuemart_calc_id])) continue;
-							//$calc_amount = $vattax[$virtuemart_calc_id];
-							$calc_amount = $calc->subTotal;
-						} else {*/
-          //$calc_amount = $calc->calc_amount;
-          //}*/
           // AstoSoft - Start
+          if ($calculate_billTaxAmount and isset($calc->subTotal)) {
+            //if(!isset($vattax[$virtuemart_calc_id])) continue;
+            //$calc_amount = $vattax[$virtuemart_calc_id];
+            $calc->calc_result = (($calc->subTotal + $calculate_discountAmount) * $calc->calc_value) / (100 + $calc->calc_value);
+          } else {
+            $calc->calc_result = $calc->calc_amount;
+          }
+
           if (!isset($calc->product_quantity)) $calc->product_quantity = 1;
           if ($calc->calc_kind == 'DBTaxRulesBill' || $calc->calc_kind == 'DATaxRulesBill') {
             $calc_rules_discount_amount += $calc->calc_result;
@@ -946,21 +951,13 @@ class VirtueMartModelOrders extends VmModel
           } else if ($calc->calc_kind == 'VatTax') {
             $calc_rules_vattax_amount += $calc->calc_result /* $calc->product_quantity*/;
           }
-
-          echo $calc->calc_result.'<br/>';
-          // AstoSoft - End
         }
+
+        $calc_rules_vattax_amount += $calculate_orderShipmentTax + $calculate_orderPaymentTax;
+        // AstoSoft - End
 
         //}
       }
-
-      echo 'calc_rules_vattax_amount: '.$calc_rules_vattax_amount.'<br/>';
-      echo 'calc_rules_tax_amount: '.$calc_rules_tax_amount.'<br/>';
-      echo 'calc_rules_discount_amount: '.$calc_rules_discount_amount.'<br/><br/>';
-      print_r($order_rules);
-      echo "<br/><br/>";
-      print_r($bill_rules);
-      exit();
 
       $date = JFactory::getDate();
       $today = $date->toSQL();
