@@ -946,11 +946,21 @@ class VirtueMartModelOrders extends VmModel
           } else if ($calc->calc_kind == 'VatTax') {
             $calc_rules_vattax_amount += $calc->calc_result /* $calc->product_quantity*/;
           }
+
+          echo $calc->calc_result.'<br/>';
           // AstoSoft - End
         }
 
         //}
       }
+
+      echo 'calc_rules_vattax_amount: '.$calc_rules_vattax_amount.'<br/>';
+      echo 'calc_rules_tax_amount: '.$calc_rules_tax_amount.'<br/>';
+      echo 'calc_rules_discount_amount: '.$calc_rules_discount_amount.'<br/><br/>';
+      print_r($order_rules);
+      echo "<br/><br/>";
+      print_r($bill_rules);
+      exit();
 
       $date = JFactory::getDate();
       $today = $date->toSQL();
