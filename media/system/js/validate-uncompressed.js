@@ -245,7 +245,7 @@ var JFormValidator = function() {
 
 document.formvalidator = null;
 jQuery(function() {
-  console.log("zip_field");
+  //console.log("zip_field");
   if (jQuery("input[id$='zip_field']").length) {
     jQuery("input[id$='zip_field']").addClass('validate-zip');
   }
