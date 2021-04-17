@@ -14,7 +14,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: product.php 10367 2020-11-02 18:17:14Z Milbo $
+ * @version $Id: product.php 10464 2021-01-28 17:38:57Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -311,7 +311,7 @@ class VirtueMartModelProduct extends VmModel
 
     $app = JFactory::getApplication();
     $db = JFactory::getDbo();
-    $this->setDebugSql(1); //VmConfig::$echoDebug = true;
+    //$this->setDebugSql(1); //VmConfig::$echoDebug = true;
     //vmdebug('sortSearchListQuery '.$group,$nbrReturnProducts);
     //User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
     //So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
@@ -468,7 +468,7 @@ class VirtueMartModelProduct extends VmModel
     }
     if (!empty($virtuemart_category_id)) {
       $joinCategory = TRUE;
-      VmConfig::set('show_subcat_products', true);
+
       if (VmConfig::get('show_subcat_products', false)) {
         /*GJC add subcat products*/
         $catmodel = VmModel::getModel('category');
@@ -1686,8 +1686,6 @@ class VirtueMartModelProduct extends VmModel
       $public_cats = array();
       $product->categories = array();
 
-
-
       if (!empty($product->categoryItem)) {
         $tmp = array();
         foreach ($product->categoryItem as $category) {
@@ -1700,10 +1698,6 @@ class VirtueMartModelProduct extends VmModel
               //vmdebug('Canon cat found');
             }
             $public_cats[] = $category['virtuemart_category_id'];
-
-            /*if($virtuemart_category_idOrdering == $category['virtuemart_category_id']){
-							$product->ordering = $category['ordering'];
-						}*/
           }
           $tmp[] = $category['virtuemart_category_id'];
         }
@@ -1776,7 +1770,6 @@ class VirtueMartModelProduct extends VmModel
             //vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
           }
         }
-        //vmdebug('$product->virtuemart_category_id',$product->virtuemart_category_id);
       }
 
       if (empty($product->virtuemart_category_id)) $product->virtuemart_category_id = $product->canonCatId;
@@ -2247,7 +2240,7 @@ class VirtueMartModelProduct extends VmModel
    * @throws Exception
    * @since version	 */
   //	 quorvia created this function because old save order may have an issue
-  function saveorder($cid = array(), $order, $filter = NULL)
+  function saveorder($cid, $order, $filter = NULL)
   {
     vRequest::vmCheckToken();
     $virtuemart_category_id = vRequest::getInt('virtuemart_category_id', 0);
@@ -2282,55 +2275,6 @@ class VirtueMartModelProduct extends VmModel
   }
 
 
-
-  /* reorder product in one category
-	 * TODO this not work perfect ! (Note by Patrick Kohl)
-	*/
-  function saveorder_old($cid = array(), $order, $filter = NULL)
-  {
-
-    vRequest::vmCheckToken();
-
-    $db = JFactory::getDbo();
-    $virtuemart_category_id = vRequest::getInt('virtuemart_category_id', 0);
-
-    $q = 'SELECT `id`,`ordering` FROM `#__virtuemart_product_categories`
-			WHERE virtuemart_category_id=' . (int)$virtuemart_category_id . '
-			ORDER BY `ordering` ASC';
-    $db->setQuery($q);
-    $pkey_orders = $db->loadObjectList();
-
-    $tableOrdering = array();
-    foreach ($pkey_orders as $orderTmp) {
-      $tableOrdering[$orderTmp->id] = $orderTmp->ordering;
-    }
-    // set and save new ordering
-    foreach ($order as $key => $ord) {
-      $tableOrdering[$key] = $ord;
-    }
-    asort($tableOrdering);
-    $i = 1;
-    $ordered = 0;
-    foreach ($tableOrdering as $key => $ord) {
-
-      $db->setQuery('UPDATE `#__virtuemart_product_categories`
-					SET `ordering` = ' . $i . '
-					WHERE `id` = ' . (int)$key . ' ');
-      if (!$db->execute()) {
-        vmError($db->getErrorMsg());
-        return FALSE;
-      }
-      $ordered++;
-      $i++;
-    }
-    if ($ordered) {
-      $msg = vmText::sprintf('COM_VIRTUEMART_ITEMS_MOVED', $ordered);
-    } else {
-      $msg = vmText::_('COM_VIRTUEMART_ITEMS_NOT_MOVED');
-    }
-    JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $virtuemart_category_id, $msg);
-  }
-
   /**
    * Moves the order of a record
    *
@@ -2340,12 +2284,22 @@ class VirtueMartModelProduct extends VmModel
   {
 
     vRequest::vmCheckToken();
+    $virtuemart_category_id = vRequest::getInt('virtuemart_category_id', 0);
+    if (is_array($virtuemart_category_id)) $virtuemart_category_id = reset($virtuemart_category_id);
+    if (empty($virtuemart_category_id)) return;
+
+    $virtuemart_product_id = vRequest::getInt('virtuemart_product_id', 0);
+    if (is_array($virtuemart_product_id)) $virtuemart_product_id = reset($virtuemart_product_id);
+    if (empty($virtuemart_product_id)) return;
 
     // Check for request forgeries
     $table = $this->getTable('product_categories');
-    $table->move($direction);
+    $table->load($virtuemart_product_id, 0, ' AND virtuemart_category_id = ' . $virtuemart_category_id);
+    $table->virtuemart_category_id = $virtuemart_category_id;
 
-    JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . vRequest::getInt('virtuemart_category_id', 0));
+    $table->move($direction, ' virtuemart_category_id = ' . $virtuemart_category_id);
+
+    JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $virtuemart_category_id);
   }
 
   /**

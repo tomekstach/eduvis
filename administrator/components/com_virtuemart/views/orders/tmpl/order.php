@@ -7,13 +7,13 @@
  * @subpackage Orders
  * @author Oscar van Eijk, Max Milbers, Valérie Isaksen
  * @link https://virtuemart.net
- * @copyright Copyright (c) 2004 - 2016 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2020 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: order.php 10178 2019-10-16 10:42:44Z Milbo $
+ * @version $Id: order.php 10381 2021-01-06 14:08:41Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -129,8 +129,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
 
             ?>
             <td><?php echo $this->orderbt->order_number; ?> <a href="<?php echo $orderLink ?>" target="_blank" title="<?php echo  vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER_FRONTEND') ?>"><span class="vm2-modallink"></span></a></td>
-            <?php /*<td><?php echo  $print_link;?>
-      </td> */ ?>
+            <?php /*<td><?php echo  $print_link;?></td> */ ?>
           </tr>
           <tr>
             <td class="key"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_PASS') ?></strong></td>
@@ -322,8 +321,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
           <table class="adminlist table">
             <thead>
               <tr>
-                <th style="text-align: center;" colspan="2">
-                  <?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></th>
+                <th style="text-align: center;" colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></th>
               </tr>
             </thead>
 
@@ -364,8 +362,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
           <table class="adminlist table">
             <thead>
               <tr>
-                <th style="text-align: center;" colspan="2">
-                  <?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></th>
+                <th style="text-align: center;" colspan="2"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></th>
               </tr>
             </thead>
             <?php
@@ -443,15 +440,12 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
               <tr>
                 <!--<th class="title" width="5%" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th> -->
                 <th class="title" width="3" align="left">#</th>
-                <th class="title" width="47" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?>
-                </th>
+                <th class="title" width="47" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?></th>
                 <th class="title" width="*" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></th>
-                <th class="title" width="10%" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?>
-                </th>
+                <th class="title" width="10%" align="left"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
                 <th class="title" width="10%"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_ITEM_STATUS') ?></th>
                 <th class="title" width="50"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_NET') ?></th>
-                <th class="title" width="50"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASEWITHTAX') ?>
-                </th>
+                <th class="title" width="50"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASEWITHTAX') ?></th>
                 <th class="title" width="50"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_GROSS') ?></th>
                 <th class="title" width="50"><?php
                                               if (is_array($this->taxBill) and count($this->taxBill) == 1) {
@@ -523,8 +517,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
         </form> <!-- Update linestatus form -->
         <!--table class="adminlist" cellspacing="0" cellpadding="0" -->
     <tr>
-      <td align="left" colspan="1">
-        <?php $editLineLink = JRoute::_('index.php?option=com_virtuemart&view=orders&orderId=' . $this->orderbt->virtuemart_order_id . '&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
+      <td align="left" colspan="1"><?php $editLineLink = JRoute::_('index.php?option=com_virtuemart&view=orders&orderId=' . $this->orderbt->virtuemart_order_id . '&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
         <!-- <a href="<?php echo $editLineLink; ?>" class="modal"> <?php echo JHtml::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "New Item"); ?>
 				New Item </a>-->
       </td>
@@ -532,15 +525,12 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
         <div align="right"><strong> <?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
           </strong></div>
       </td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal); ?></td>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal); ?></td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_tax); ?></td>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax); ?></td>
       <td align="right"> <?php echo $this->currency->priceDisplay($this->orderbt->order_discountAmount); ?></td>
-      <td width="15%" align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice); ?></td>
+      <td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice); ?></td>
     </tr>
     <?php
     /* COUPON DISCOUNT */
@@ -556,9 +546,8 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php
-        echo $this->currency->priceDisplay($this->orderbt->coupon_discount);  ?>
+      <td align="right" style="padding-right: 5px;"><?php
+                                                    echo $this->currency->priceDisplay($this->orderbt->coupon_discount);  ?>
         <input class='orderEdit' type="text" size="8" name="coupon_discount" value="<?php echo $this->orderbt->coupon_discount; ?>" />
       </td>
     </tr>
@@ -621,40 +610,31 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
     ?>
 
     <tr>
-      <td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong>
-      </td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_shipment); ?>
+      <td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment); ?>
         <input class='orderEdit' type="text" size="8" name="order_shipment" value="<?php echo $this->orderbt->order_shipment; ?>" />
       </td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax); ?>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax); ?>
         <input class='orderEdit' type="text" size="12" name="order_shipment_tax" value="<?php echo $this->orderbt->order_shipment_tax; ?>" />
       </td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_shipment + $this->orderbt->order_shipment_tax); ?>
-      </td>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment + $this->orderbt->order_shipment_tax); ?></td>
 
     </tr>
     <tr>
       <td align="right" colspan="5"><strong><?php echo vmText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment); ?>
         <input class='orderEdit' type="text" size="8" name="order_payment" value="<?php echo $this->orderbt->order_payment; ?>" />
       </td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?>
         <input class='orderEdit' type="text" size="12" name="order_payment_tax" value="<?php echo $this->orderbt->order_payment_tax; ?>" />
       </td>
       <td align="right" style="padding-right: 5px;">&nbsp;</td>
-      <td align="right" style="padding-right: 5px;">
-        <?php echo $this->currency->priceDisplay($this->orderbt->order_payment + $this->orderbt->order_payment_tax); ?>
-      </td>
+      <td align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment + $this->orderbt->order_payment_tax); ?></td>
 
     </tr>
     <?php
@@ -670,7 +650,7 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
             <?php echo $this->currency->priceDisplay($rule->calc_amount);
             /* <input class='orderEdit' type="text" size="8"
 								name="calc_rules[<?php echo $rule->calc_kind ?>][<?php echo $rule->virtuemart_calc_id ?>]"
-        value="<?php echo $rule->calc_amount; ?>"/>*/
+								value="<?php echo $rule->calc_amount; ?>"/>*/
             ?>
           </td>
           <td align="right" colspan="2"></td>
@@ -691,17 +671,12 @@ vmJsApi::addJScript('/administrator/components/com_virtuemart/assets/js/orders.j
           <input class='orderEdit' type="checkbox" name="calculate_billTaxAmount" value="1" checked /> <label class='orderEdit' for="calculate_billTaxAmount"><?php echo vmText::_('COM_VIRTUEMART_ORDER_EDIT_CALCULATE'); ?></label>
         </span>
       </td>
-      <td align="right" style="padding-right: 5px;">
-        <strong><?php echo $this->currency->priceDisplay($this->orderbt->order_billDiscountAmount); ?></strong>
-      </td>
-      <td align="right" style="padding-right: 5px;">
-        <strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
+      <td align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_billDiscountAmount); ?></strong></td>
+      <td align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
       </td>
     </tr>
     <tr style="border-top-style:double">
-      <td align="left" colspan="3" style="padding-right: 5px;">
-        <strong><?php echo vmText::_('COM_VM_ORDER_BALANCE') ?></strong>
-      </td>
+      <td align="left" colspan="3" style="padding-right: 5px;"><strong><?php echo vmText::_('COM_VM_ORDER_BALANCE') ?></strong></td>
 
       <?php
 
