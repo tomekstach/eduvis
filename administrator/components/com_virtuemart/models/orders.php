@@ -17,7 +17,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: orders.php 10363 2020-11-02 17:58:28Z Milbo $
+ * @version $Id: orders.php 10444 2021-01-22 20:58:18Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -234,7 +234,8 @@ class VirtueMartModelOrders extends VmModel
     $order = array();
 
     // Get the order details
-    $q = "SELECT  o.*, o.created_on as order_created, o.modified_on as order_modified, u.*, s.order_status_name
+    $q = "SELECT  o.*, o.created_on as order_created, o.modified_on as order_modified, o.modified_by as order_modified_by, u.*, 
+				s.order_status_code, s.order_status_color, s.order_status_name, s.order_status_description, s.order_stock_handle, s.ordering
 			FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_orderstates s
 			ON s.order_status_code = o.order_status
@@ -244,6 +245,11 @@ class VirtueMartModelOrders extends VmModel
     $db->setQuery($q);
     $order['details'] = $db->loadObjectList('address_type');
     if ($order['details'] and isset($order['details']['BT'])) {
+
+      $order["details"]["BT"]->created_on = &$order["details"]["BT"]->order_created;
+      $order["details"]["BT"]->modified_on = &$order["details"]["BT"]->order_modified;
+      $order["details"]["BT"]->modified_by = &$order["details"]["BT"]->order_modified_by;
+
       $concat = array();
       if (!empty($order['details']['BT']->company))  $concat[] = $order['details']['BT']->company;
       if (!empty($order['details']['BT']->first_name))  $concat[] = $order['details']['BT']->first_name;
@@ -427,6 +433,8 @@ class VirtueMartModelOrders extends VmModel
       //quorvia added  ST data searches and virtuemart_order_id and order total
       $searchFields[] = 'o.virtuemart_order_id';
       $searchFields[] = 'round(o.order_total,2)';
+      $searchFields[] = 'u.customer_note';
+      $searchFields[] = 'o.order_note';
       $searchFields[] = 'st.last_name';
       $searchFields[] = 'st.company';
       $searchFields[] = 'st.city';
